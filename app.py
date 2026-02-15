@@ -16,9 +16,15 @@ st.subheader("AI-Augmented Vedic Forecasting")
 # --- SIDEBAR: INPUTS ---
 with st.sidebar:
     st.header("1. Credentials")
-    api_key = st.text_input("Enter Google Gemini API Key", type="password")
-    st.markdown("[Get a Free Key Here](https://aistudio.google.com/app/apikey)")
     
+    # Check if the key is in the "Secrets" vault
+    if "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+        st.success("✅ API Key loaded from System Secrets")
+    else:
+        # Fallback: Ask the user
+        api_key = st.text_input("Enter Google Gemini API Key", type="password")
+        st.markdown("[Get a Free Key Here](https://aistudio.google.com/app/apikey)")
     st.divider()
     
     st.header("2. Subject Data")
