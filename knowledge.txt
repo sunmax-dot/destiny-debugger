@@ -66,4 +66,43 @@ SECTION 3: KEY YOGAS (THE DESIGN PATTERNS)
 - Rule: Moon and Mars conjoined or aspecting each other.
 - Effect: Earnings through unscrupulous means or aggressive business tactics. High financial drive.
 
-[YOGA: Vipareeta Raja Yoga
+[YOGA: Vipareeta Raja Yoga]
+- Rule: Lord of 6, 8, or 12 is placed in 6, 8, or 12 (e.g., 6th lord in 8th).
+- Effect: Success rises from the ashes of failure. Victory through sudden events or competitor's loss.
+
+[YOGA: Kemadruma (Negative)]
+- Rule: No planets (except Sun/Rahu/Ketu) on either side of the Moon.
+- Effect: Mental anxiety, fluctuations in wealth, feeling unsupported. Needs "cancellation" to fix.
+
+================================================================================
+SECTION 4: TRANSIT RULES (THE WEATHER FORECAST)
+================================================================================
+[SOURCE: Phaladeepika, Ch 26]
+
+[TRANSIT: Saturn (Shani)]
+- Rule: Saturn transiting the 3rd, 6th, or 11th house from Natal Moon is EXCELLENT.
+- Effect: Victory, crushing enemies, high gains, increased authority.
+- Rule: Saturn transiting the 12th, 1st, or 2nd from Natal Moon is "Sade Sati".
+- Effect: High pressure, emotional stress, testing of foundations, forced maturity.
+- Rule: Saturn transiting the 4th (Ardha-Ashtama) or 8th (Ashtama) from Natal Moon.
+- Effect: Career changes, domestic stress, unexpected obstacles.
+
+[TRANSIT: Jupiter (Guru)]
+- Rule: Jupiter transiting 2nd, 5th, 7th, 9th, or 11th from Natal Moon is AUSPICIOUS.
+- Effect: Wealth, birth of children/projects, marriage, spiritual growth, promotion.
+- Rule: Jupiter in 1st, 3rd, 4th, 6th, 8th, 10th, 12th is generally challenging or neutral.
+- Effect: Increased expenses, change of place, or heavy workload without immediate recognition.
+
+================================================================================
+SECTION 5: MODERN TECH TRANSLATION LAYER
+================================================================================
+[SOURCE: Modern Synthesis for Tech Careers]
+
+- Rule: Influence of Rahu on 10th House or 10th Lord often indicates career in Cutting-edge Tech (AI, Crypto, Space).
+- Rule: Influence of Mercury on 10th House indicates Data Science, FinTech, or Trading.
+- Rule: Influence of Ketu on 10th House indicates Debugging, Cyber Security, or Niche/Abstract backend work.
+- Rule: 3rd House strength is critical for Startups (Courage to build).
+- Rule: 5th House strength is critical for Product Management (Creative Logic).
+- Rule: 11th House strength determines Scalability (Network effects and Gains).
+- Rule: "Microservices" architecture is represented by Gemini (Communication between twins/nodes) and Aquarius (Networked systems).
+- Rule: "Monolith" architecture is represented by Capricorn (Saturnine structure) and Taurus (Fixed earth).
