@@ -247,17 +247,71 @@ if st.button("Run Analysis"):
                 except Exception as e: st.error(f"Error: {e}")
             else: st.error("City not found.")
 
-# --- CHAT ---
+# --- INTERACTIVE CHAT SECTION ---
 if st.session_state.context:
     st.divider()
     st.header("💬 Consultation")
-    for m in st.session_state.messages:
-        with st.chat_message(m["role"]): st.markdown(m["content"])
-        
-    cols = st.columns(4)
-    if cols[0].button("📈 Career"): handle_chat_query("Career Roadmap?", api_key); st.rerun()
-    if cols[1].button("⚠️ Risks"): handle_chat_query("Biggest Risk?", api_key); st.rerun()
+
+    # 1. Display Chat History
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # 2. Suggested Questions (Chips)
+    # We use a session state variable to capture chip clicks
+    if "chip_prompt" not in st.session_state:
+        st.session_state.chip_prompt = None
+
+    st.write("###### Suggested Questions:")
+    col1, col2, col3, col4 = st.columns(4)
     
-    if prompt := st.chat_input("Ask a question..."):
-        handle_chat_query(prompt, api_key)
-        st.rerun()
+    if col1.button("📈 Career Roadmap"): st.session_state.chip_prompt = "Give me a 3-point Career Roadmap."
+    if col2.button("⚠️ Risk Analysis"): st.session_state.chip_prompt = "What is the biggest risk in my chart?"
+    if col3.button("🚀 Startup Timing"): st.session_state.chip_prompt = "When is the best time to launch a startup?"
+    if col4.button("💰 Wealth Outlook"): st.session_state.chip_prompt = "Analyze my wealth potential."
+
+    # 3. Handle Input (Text Input OR Chip Click)
+    user_input = st.chat_input("Type your question here...")
+    
+    # Determine if we have a new question to process
+    active_prompt = user_input or st.session_state.chip_prompt
+    
+    if active_prompt:
+        # A. Display User Message Immediately
+        st.session_state.messages.append({"role": "user", "content": active_prompt})
+        with st.chat_message("user"):
+            st.markdown(active_prompt)
+            
+        # B. Clear the chip prompt so it doesn't fire again
+        st.session_state.chip_prompt = None
+
+        # C. The "Thinking" Block
+        if api_key:
+            with st.chat_message("assistant"):
+                # --- THIS IS THE PART YOU ASKED FOR ---
+                with st.spinner("✨ Consulting the Astral Plane..."):
+                    try:
+                        genai.configure(api_key=api_key)
+                        chat_model = genai.GenerativeModel('gemini-flash-latest')
+                        
+                        final_prompt = f"""
+                        {st.session_state.context}
+                        
+                        USER QUESTION: {active_prompt}
+                        
+                        TASK: Answer concisely using the provided context rules.
+                        """
+                        
+                        response = chat_model.generate_content(final_prompt)
+                        bot_reply = response.text
+                        
+                        # Display result
+                        st.markdown(bot_reply)
+                        
+                        # Save to history
+                        st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+                        
+                    except Exception as e:
+                        st.error(f"Error: {e}")
+        else:
+            st.error("Please enter an API Key to chat.")
