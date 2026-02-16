@@ -204,7 +204,7 @@ if st.button("Run Analysis"):
         with st.spinner("Analyzing..."):
             lat, lon = get_lat_lon(city_name)
             if lat:
-                # Calc Logic
+                # 1. Calculate Planetary Positions
                 date_str = f"{dob.strftime('%Y/%m/%d')} {tob.strftime('%H:%M:%S')}"
                 obs = ephem.Observer()
                 obs.lat, obs.lon, obs.date = str(lat), str(lon), date_str
@@ -214,26 +214,55 @@ if st.button("Run Analysis"):
                 sun_sign, sun_idx = get_zodiac_sign(sun.hlon)
                 moon_sign, moon_idx = get_zodiac_sign(moon.hlon)
                 
+                # 2. Calculate Transits (The Forward Curve)
                 df = calculate_transits(dob, forecast_years, moon_idx)
                 events = df[df["Energy Score"] != 0].drop_duplicates(subset=["Status"])
                 
-                # RAG Logic
+                # 3. READ THE KNOWLEDGE BASE (Must happen BEFORE the prompt!)
                 try:
-                    with open("knowledge.txt", "r") as f: kb = f.read()
-                except: kb = "General Rules."
+                    with open("knowledge.txt", "r") as f:
+                        knowledge_base = f.read()
+                except FileNotFoundError:
+                    knowledge_base = "General Vedic Rules apply."
                 
+                # 4. Configure AI & Create Prompt
                 genai.configure(api_key=api_key)
                 model = genai.GenerativeModel('gemini-flash-latest')
-                prompt = f"Act as Vedic Strategist.\nKB: {kb}\nData: Sun {sun_sign}, Moon {moon_sign}\nTask: Executive Summary."
+                
+                # Now 'knowledge_base' is defined and safe to use here:
+                prompt = f"""
+                ROLE: Act as a strict Vedic Astrologer and Career Strategist.
+                
+                --- KNOWLEDGE BASE ---
+                {knowledge_base}
+                ----------------------
+                
+                SUBJECT DATA:
+                - Sun Sign: {sun_sign}
+                - Moon Sign: {moon_sign}
+                - Upcoming Planetary Shifts: {events['Status'].tolist()}
+                - Shift Dates: {events['Date'].dt.strftime('%Y-%m').tolist()}
+                
+                --- CONSTRAINTS (CRITICAL) ---
+                1. DO NOT provide real-world financial data (e.g., current stock prices).
+                2. DO NOT mention specific politicians, news events, or non-astrological facts.
+                3. Base your predictions ONLY on the provided Planetary Data and Knowledge Base rules.
+                
+                TASK:
+                1. Write an 'Executive Summary' of their destiny for the next {forecast_years} years.
+                2. Cite specific rules from the Knowledge Base.
+                3. Keep it text-based (no markdown bolding) for PDF compatibility.
+                """
                 
                 try:
+                    # 5. Generate Content
                     response = model.generate_content(prompt)
                     analysis_text = response.text
                     
-                    # Store Context
+                    # Store Context for Chatbot
                     st.session_state.context = f"CONTEXT: User Sun {sun_sign}, Moon {moon_sign}.\nANALYSIS: {analysis_text}"
                     
-                    # Display
+                    # Display Results
                     c1, c2 = st.columns(2)
                     c1.metric("☀️ Sun", sun_sign)
                     c2.metric("🌙 Moon", moon_sign)
@@ -241,11 +270,14 @@ if st.button("Run Analysis"):
                     st.write("### 🤖 Analysis")
                     st.write(analysis_text)
                     
+                    # Generate PDF
                     pdf_bytes = create_pdf(analysis_text, sun_sign, moon_sign, events)
                     st.download_button("📄 Download PDF", pdf_bytes, "dossier.pdf", "application/pdf")
                     
-                except Exception as e: st.error(f"Error: {e}")
-            else: st.error("City not found.")
+                except Exception as e:
+                    st.error(f"Error: {e}")
+            else:
+                st.error("City not found.")
 
 # --- INTERACTIVE CHAT SECTION ---
 if st.session_state.context:
