@@ -225,13 +225,21 @@ if st.button("Run Analysis"):
                 except FileNotFoundError:
                     knowledge_base = "General Vedic Rules apply."
                 
-                # 4. Configure AI & Create Prompt
+
+                # --- 1. GET THE ANCHOR DATE ---
+                today_str = datetime.date.today().strftime("%B %d, %Y")  # e.g., "February 15, 2026"
+                
+                # --- 2. CONFIGURE AI & CREATE PROMPT ---
                 genai.configure(api_key=api_key)
                 model = genai.GenerativeModel('gemini-flash-latest')
                 
-                # Now 'knowledge_base' is defined and safe to use here:
+                # --- 3. THE ANCHORED PROMPT ---
                 prompt = f"""
-                ROLE: Act as a strict Vedic Astrologer and Career Strategist.
+                ROLE: Act as a strict Vedic Astrologer.
+                
+                --- TIME ANCHOR ---
+                CURRENT DATE: {today_str}
+                FORECAST HORIZON: {forecast_years} Years (From {today_str} onwards)
                 
                 --- KNOWLEDGE BASE ---
                 {knowledge_base}
@@ -243,15 +251,15 @@ if st.button("Run Analysis"):
                 - Upcoming Planetary Shifts: {events['Status'].tolist()}
                 - Shift Dates: {events['Date'].dt.strftime('%Y-%m').tolist()}
                 
-                --- CONSTRAINTS (CRITICAL) ---
-                1. DO NOT provide real-world financial data (e.g., current stock prices).
-                2. DO NOT mention specific politicians, news events, or non-astrological facts.
-                3. Base your predictions ONLY on the provided Planetary Data and Knowledge Base rules.
+                --- CONSTRAINTS ---
+                1. START the analysis strictly from {today_str}. Do NOT mention 2024 or 2025 unless they are relevant historical context.
+                2. Base predictions ONLY on the provided "Shift Dates."
+                3. DO NOT provide real-world financial data (stocks/crypto).
                 
                 TASK:
-                1. Write an 'Executive Summary' of their destiny for the next {forecast_years} years.
+                1. Write an 'Executive Summary' for the period {today_str} to {int(today_str.split(',')[-1]) + forecast_years}.
                 2. Cite specific rules from the Knowledge Base.
-                3. Keep it text-based (no markdown bolding) for PDF compatibility.
+                3. Keep it text-based for PDF compatibility.
                 """
                 
                 try:
