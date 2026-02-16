@@ -156,23 +156,32 @@ if st.button("Run Universal Analysis"):
                 genai.configure(api_key=api_key)
                 model_candidates = ['gemini-flash-latest', 'gemini-pro-latest', 'gemini-2.0-flash-exp']
                 
+             # --- NEW: RAG LOADING ---
+                try:
+                    with open("knowledge.txt", "r") as f:
+                        knowledge_base = f.read()
+                except FileNotFoundError:
+                    knowledge_base = "No specific rules found. Use general knowledge."
+
+                # --- NEW: CONTEXTUAL PROMPT ---
                 prompt = f"""
-                Act as an objective Vedic Astrologer.
+                Act as a Vedic Scholar. Use the following "Classical Rules" to analyze the user's chart.
                 
-                Subject Profile:
+                --- KNOWLEDGE BASE ---
+                {knowledge_base}
+                ----------------------
+                
+                User Data:
                 - Sun Sign: {sun_sign}
                 - Moon Sign: {moon_sign}
-                
-                Transit Data (Next {forecast_years} Years):
-                - The subject will experience these key shifts: {events['Status'].tolist()}
-                - Dates of shifts: {events['Date'].dt.strftime('%Y-%m').tolist()}
+                - Transit Status: {events['Status'].tolist()}
                 
                 Task:
-                1. Analyze the "Forward Curve" of their energy. When are the peaks (Growth) and valleys (Pressure)?
-                2. Provide a strategic roadmap. (e.g., "Build in 2026, Harvest in 2029").
-                3. Do NOT assume their job or gender. Keep it universally applicable to any human life path.
+                1. Analyze the user's upcoming period.
+                2. CITATION REQUIRED: You MUST quote a specific 'Rule' from the Knowledge Base if it applies. (e.g., "As per Rule 2...")
+                3. If no rule perfectly fits, use your general knowledge but mention "General Interpretation".
                 
-                Format: Professional, strategic, and empowering.
+                Keep it strict, scholarly, and strategic.
                 """
                 
                 success = False
