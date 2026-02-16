@@ -7,54 +7,105 @@ import datetime
 import time
 import pandas as pd
 from fpdf import FPDF
+import json
+import os
 
 # --- CONFIGURATION ---
 st.set_page_config(page_title="Destiny Dossier", page_icon="🔮", layout="wide")
+st.title("🔮 The Destiny Dossier: Memory Edition")
 
-st.title("🔮 The Destiny Debugger: Dossier Edition")
-st.subheader("AI-Augmented Vedic Forecasting")
+# --- DATABASE MANAGEMENT (JSON) ---
+DB_FILE = "profiles.json"
 
-# --- SESSION STATE INITIALIZATION ---
+def load_profiles():
+    if not os.path.exists(DB_FILE):
+        return []
+    try:
+        with open(DB_FILE, "r") as f:
+            return json.load(f)
+    except:
+        return []
+
+def save_profile(name, dob, tob_str, city):
+    profiles = load_profiles()
+    # Check if profile exists and update it, or append new
+    new_entry = {
+        "name": name,
+        "dob": dob.strftime("%Y-%m-%d"),
+        "tob": tob_str,
+        "city": city
+    }
+    # Remove existing if name matches (Update logic)
+    profiles = [p for p in profiles if p["name"] != name]
+    profiles.append(new_entry)
+    
+    with open(DB_FILE, "w") as f:
+        json.dump(profiles, f, indent=4)
+
+# --- SESSION STATE ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "context" not in st.session_state:
-    st.session_state.context = None  # Stores the analysis for the bot
+    st.session_state.context = None
 
-# --- SIDEBAR: INPUTS ---
+# --- SIDEBAR: INPUTS & PROFILES ---
 with st.sidebar:
-    st.header("1. Credentials")
-    # Check Secrets first, then Fallback to Input
-    if "GOOGLE_API_KEY" in st.secrets:
-        api_key = st.secrets["GOOGLE_API_KEY"]
-        st.success("✅ API Key loaded from System Secrets")
-    else:
-        api_key = st.text_input("Enter Google Gemini API Key", type="password")
-        st.markdown("[Get a Free Key Here](https://aistudio.google.com/app/apikey)")
+    st.header("1. Profile Manager")
     
+    # LOAD EXISTING PROFILE
+    existing_profiles = load_profiles()
+    profile_names = ["-- New Profile --"] + [p["name"] for p in existing_profiles]
+    selected_profile = st.selectbox("Load Saved Profile", profile_names)
+    
+    # DEFAULTS
+    default_dob = datetime.date(1980, 1, 1)
+    default_tob = datetime.time(12, 0)
+    default_city = "Houston, TX"
+    
+    # If a profile is selected, override defaults
+    if selected_profile != "-- New Profile --":
+        # Find data
+        data = next(p for p in existing_profiles if p["name"] == selected_profile)
+        default_dob = datetime.datetime.strptime(data["dob"], "%Y-%m-%d").date()
+        t = datetime.datetime.strptime(data["tob"], "%H:%M:%S").time()
+        default_tob = t
+        default_city = data["city"]
+        st.success(f"Loaded: {selected_profile}")
+
     st.divider()
     
     st.header("2. Subject Data")
-    dob = st.date_input(
-        "Date of Birth", 
-        value=datetime.date(1980, 1, 1), 
-        min_value=datetime.date(1900, 1, 1), 
-        max_value=datetime.date(2026, 12, 31)
-    )
-    tob = st.time_input("Time of Birth", value=datetime.time(12, 00), step=60)
-    city_name = st.text_input("Birth City", value="Houston, TX")
+    # Inputs (Pre-filled if profile loaded)
+    name_input = st.text_input("Subject Name", value=selected_profile if selected_profile != "-- New Profile --" else "")
+    dob = st.date_input("Date of Birth", value=default_dob, min_value=datetime.date(1900, 1, 1))
+    tob = st.time_input("Time of Birth", value=default_tob, step=60)
+    city_name = st.text_input("Birth City", value=default_city)
     
+    # SAVE BUTTON
+    if st.button("💾 Save Profile"):
+        if name_input:
+            save_profile(name_input, dob, tob.strftime("%H:%M:%S"), city_name)
+            st.success(f"Saved {name_input} to Database!")
+            time.sleep(1)
+            st.rerun()
+        else:
+            st.error("Enter a name to save.")
+
     st.divider()
-    forecast_years = st.slider("Forecast Horizon (Years)", 1, 20, 15)
+    st.header("3. Settings")
+    forecast_years = st.slider("Forecast Horizon", 1, 20, 15)
     
-    # Reset Chat Button
-    if st.button("Clear Chat History"):
-        st.session_state.messages = []
-        st.rerun()
+    # API Key Logic
+    if "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+    else:
+        api_key = st.text_input("API Key", type="password")
+
 
 # --- LOGIC: HELPER FUNCTIONS ---
 def get_lat_lon(city):
     try:
-        geolocator = Nominatim(user_agent="destiny_debugger_v4")
+        geolocator = Nominatim(user_agent="destiny_debugger_v5")
         location = geolocator.geocode(city)
         if location:
             return location.latitude, location.longitude
@@ -87,7 +138,6 @@ def calculate_transits(start_date, years, natal_moon_idx):
         score = 0
         status = "Neutral"
         
-        # Simple Scoring Logic
         if j_idx == natal_moon_idx:
             score += 2
             status = "Jupiter Return (Growth)"
@@ -113,23 +163,15 @@ def create_pdf(analysis_text, sun_sign, moon_sign, events):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    
-    # Title
-    pdf.set_font("Arial", 'B', 16)
     pdf.cell(200, 10, txt="The Destiny Dossier", ln=True, align='C')
     pdf.ln(10)
-    
-    # Profile
-    pdf.set_font("Arial", 'B', 12)
     pdf.cell(200, 10, txt=f"Profile: Sun in {sun_sign} | Moon in {moon_sign}", ln=True)
     pdf.ln(5)
     
-    # Analysis Body (Sanitized)
     pdf.set_font("Arial", size=11)
     clean_text = analysis_text.encode('latin-1', 'replace').decode('latin-1')
     pdf.multi_cell(0, 10, txt=clean_text)
     
-    # Key Dates Table
     pdf.ln(10)
     pdf.set_font("Arial", 'B', 12)
     pdf.cell(200, 10, txt="Strategic Timeline:", ln=True)
@@ -144,164 +186,78 @@ def create_pdf(analysis_text, sun_sign, moon_sign, events):
     return pdf.output(dest='S').encode('latin-1')
 
 def handle_chat_query(query, api_key_val):
-    """Processes a user question and appends response to chat history."""
-    # Add User Message
     st.session_state.messages.append({"role": "user", "content": query})
-    
     try:
         genai.configure(api_key=api_key_val)
         chat_model = genai.GenerativeModel('gemini-flash-latest')
-        
-        final_prompt = f"""
-        {st.session_state.context}
-        
-        USER QUESTION: {query}
-        
-        TASK: Answer concisely using the provided context rules.
-        """
-        
+        final_prompt = f"{st.session_state.context}\nUSER QUESTION: {query}\nTASK: Answer concisely."
         response = chat_model.generate_content(final_prompt)
-        
-        # Add Bot Message
         st.session_state.messages.append({"role": "assistant", "content": response.text})
-        
     except Exception as e:
         st.session_state.messages.append({"role": "assistant", "content": f"Error: {e}"})
 
-# --- MAIN ANALYSIS TRIGGER ---
-if st.button("Run Dossier Analysis"):
+# --- MAIN APP UI ---
+if st.button("Run Analysis"):
     if not api_key:
         st.error("⚠️ Please enter an API Key.")
     elif dob and tob and city_name:
-        with st.spinner("Compiling Cosmic Data..."):
+        with st.spinner("Analyzing..."):
             lat, lon = get_lat_lon(city_name)
-            
             if lat:
-                st.success(f"📍 Location Locked: {city_name}")
-                
-                # 1. Calc Natal
+                # Calc Logic
                 date_str = f"{dob.strftime('%Y/%m/%d')} {tob.strftime('%H:%M:%S')}"
                 obs = ephem.Observer()
                 obs.lat, obs.lon, obs.date = str(lat), str(lon), date_str
-                
                 sun, moon = ephem.Sun(), ephem.Moon()
                 sun.compute(obs)
                 moon.compute(obs)
-                
                 sun_sign, sun_idx = get_zodiac_sign(sun.hlon)
                 moon_sign, moon_idx = get_zodiac_sign(moon.hlon)
                 
-                # 2. Calc Transits
                 df = calculate_transits(dob, forecast_years, moon_idx)
                 events = df[df["Energy Score"] != 0].drop_duplicates(subset=["Status"])
                 
-                # 3. RAG Loading
+                # RAG Logic
                 try:
-                    with open("knowledge.txt", "r") as f:
-                        knowledge_base = f.read()
-                except FileNotFoundError:
-                    knowledge_base = "General Vedic Rules apply."
-
-                # 4. Generate Analysis
+                    with open("knowledge.txt", "r") as f: kb = f.read()
+                except: kb = "General Rules."
+                
                 genai.configure(api_key=api_key)
                 model = genai.GenerativeModel('gemini-flash-latest')
-                
-                prompt = f"""
-                Act as a Vedic Strategist.
-                
-                --- KNOWLEDGE BASE ---
-                {knowledge_base}
-                ----------------------
-                
-                Subject Data:
-                - Sun: {sun_sign}, Moon: {moon_sign}
-                - Key Upcoming Shifts: {events['Status'].tolist()}
-                - Dates: {events['Date'].dt.strftime('%Y-%m').tolist()}
-                
-                Task:
-                1. Write an 'Executive Summary' for the next {forecast_years} years.
-                2. Cite specific rules from the Knowledge Base.
-                3. Keep it text-based for PDF compatibility.
-                """
+                prompt = f"Act as Vedic Strategist.\nKB: {kb}\nData: Sun {sun_sign}, Moon {moon_sign}\nTask: Executive Summary."
                 
                 try:
                     response = model.generate_content(prompt)
                     analysis_text = response.text
                     
-                    # 5. Store Context for Chatbot
-                    st.session_state.context = f"""
-                    SYSTEM CONTEXT:
-                    You are analyzing a user with:
-                    - Sun: {sun_sign}, Moon: {moon_sign}
-                    - Upcoming Shifts: {events['Status'].tolist()}
-                    - Rules: {knowledge_base}
+                    # Store Context
+                    st.session_state.context = f"CONTEXT: User Sun {sun_sign}, Moon {moon_sign}.\nANALYSIS: {analysis_text}"
                     
-                    PREVIOUS ANALYSIS:
-                    {analysis_text}
-                    """
-                    
-                    # 6. Display UI
+                    # Display
                     c1, c2 = st.columns(2)
                     c1.metric("☀️ Sun", sun_sign)
                     c2.metric("🌙 Moon", moon_sign)
                     st.line_chart(df.set_index("Date")["Energy Score"])
-                    st.write("### 🤖 Executive Summary")
+                    st.write("### 🤖 Analysis")
                     st.write(analysis_text)
                     
-                    # 7. Generate PDF
                     pdf_bytes = create_pdf(analysis_text, sun_sign, moon_sign, events)
-                    st.download_button(
-                        label="📄 Download Official Destiny Dossier (PDF)",
-                        data=pdf_bytes,
-                        file_name="destiny_dossier.pdf",
-                        mime="application/pdf"
-                    )
+                    st.download_button("📄 Download PDF", pdf_bytes, "dossier.pdf", "application/pdf")
                     
-                except Exception as e:
-                    st.error(f"AI Error: {e}")
+                except Exception as e: st.error(f"Error: {e}")
+            else: st.error("City not found.")
 
-            else:
-                st.error("City not found.")
-    else:
-        st.warning("Enter details.")
-
-# --- INTERACTIVE CHAT SECTION ---
+# --- CHAT ---
 if st.session_state.context:
     st.divider()
-    st.header("💬 Ask the Astral Architect")
-    st.caption("Explore your analysis further.")
-
-    # 1. Display Chat History
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # 2. Suggested Questions (Chips)
-    # We use columns to create a row of buttons
-    st.write("###### Suggested Questions:")
-    col1, col2, col3, col4 = st.columns(4)
+    st.header("💬 Consultation")
+    for m in st.session_state.messages:
+        with st.chat_message(m["role"]): st.markdown(m["content"])
+        
+    cols = st.columns(4)
+    if cols[0].button("📈 Career"): handle_chat_query("Career Roadmap?", api_key); st.rerun()
+    if cols[1].button("⚠️ Risks"): handle_chat_query("Biggest Risk?", api_key); st.rerun()
     
-    # We use a callback logic: If button clicked, we treat it as a prompt
-    chip_prompt = None
-    
-    if col1.button("📈 Career Roadmap"):
-        chip_prompt = "Based on my chart, give me a 3-point Career Roadmap for the next 5 years."
-    if col2.button("⚠️ Risk Analysis"):
-        chip_prompt = "What is the biggest 'Bug' or risk in my chart I should watch out for?"
-    if col3.button("🚀 Startup Timing"):
-        chip_prompt = "When is the best time for me to launch a new venture or startup?"
-    if col4.button("💰 Wealth Outlook"):
-        chip_prompt = "Analyze my potential for wealth accumulation and investments."
-
-    # 3. Handle Inputs (Chip OR Text Box)
-    user_input = st.chat_input("Type your question here...")
-    
-    # Determine which input to use
-    final_query = chip_prompt if chip_prompt else user_input
-    
-    if final_query:
-        if api_key:
-            handle_chat_query(final_query, api_key)
-            st.rerun() # Refresh to show the new message
-        else:
-            st.error("API Key missing.")
+    if prompt := st.chat_input("Ask a question..."):
+        handle_chat_query(prompt, api_key)
+        st.rerun()
