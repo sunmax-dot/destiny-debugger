@@ -169,21 +169,32 @@ if st.button("Run Dossier Analysis"):
                 model = genai.GenerativeModel('gemini-flash-latest') # Using standard alias
                 
                 prompt = f"""
-                Act as a Vedic Strategist.
+                Act as a Vedic Strategist for a Tech Executive.
                 
-                --- KNOWLEDGE BASE ---
+                --- KNOWLEDGE BASE INSTRUCTIONS ---
+                1. Read the provided "knowledge.txt" content below carefully.
+                2. You MUST cite specific rules (e.g., "[SOURCE: Phaladeepika, Ch 26]") when making claims.
+                3. Use "Section 5: Modern Tech Translation" to convert ancient terms into corporate strategy.
+                
+                --- DATA ---
+                Subject Profile: Sun in {sun_sign}, Moon in {moon_sign}
+                Current Transits: {events['Status'].tolist()}
+                Transit Dates: {events['Date'].dt.strftime('%Y-%m').tolist()}
+                
+                --- KNOWLEDGE BASE CONTENT ---
                 {knowledge_base}
-                ----------------------
+                -------------------------------
                 
-                Subject Data:
-                - Sun: {sun_sign}, Moon: {moon_sign}
-                - Key Upcoming Shifts: {events['Status'].tolist()}
-                - Dates: {events['Date'].dt.strftime('%Y-%m').tolist()}
+                TASK:
+                1. ANALYZE: Look for "Yogas" in the chart (e.g., if Sun/Mercury are close, mention Budhaditya).
+                2. FORECAST: Look at the Transit list. Compare it to "Section 4" rules. (e.g., Is Saturn in the 3rd/6th/11th from Moon?).
+                3. STRATEGIZE: Combine the ancient rule with the Modern Tech Translation.
+                   - Example: "Saturn in the 3rd House (Rule: Victory) suggests a successful deployment of new Infrastructure (Section 5)."
                 
-                Task:
-                1. Write a 'Executive Summary' of their destiny for the next {forecast_years} years.
-                2. Cite specific rules from the Knowledge Base if applicable.
-                3. Keep it strictly text-based (no markdown bolding/italics) so it prints cleanly to PDF.
+                OUTPUT FORMAT:
+                - Executive Summary (3-4 sentences)
+                - Key Technical Indicators (Bulleted list of Yogas/Transits with Citations)
+                - Strategic Roadmap (Timeline based on the dates provided)
                 """
                 
                 try:

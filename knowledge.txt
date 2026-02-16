@@ -1,10 +1,69 @@
-[SOURCE: Parashara Hora Shastra, Chapter 12]
-Rule 1: If Jupiter aspects the Moon, it creates 'Gaja Kesari Yoga', giving fame and polite speech.
-Rule 2: Saturn's aspect on the Moon causes 'Vish Yoga', creating mental stress, delay in success, but high discipline.
-Rule 3: Sun in the 10th House (Meridian) is 'Digbala', giving executive power and government favor.
-Rule 4: Mars in the 10th House gives energy for leadership but creates conflict with superiors.
-Rule 5: Rahu (North Node) in the 10th House indicates success in foreign lands or software technology.
+================================================================================
+SECTION 1: PLANETARY KARAKAS (THE ACTORS)
+================================================================================
+[SOURCE: Brihat Parashara Hora Shastra, Ch 3]
+- Sun (Surya): Soul, Ego, Father, Government, Authority, CEO roles, Vitality.
+- Moon (Chandra): Mind, Emotions, Mother, Public Interaction, UI/UX, Intuition.
+- Mars (Mangala): Energy, Engineering, Logic, Coding, Real Estate, Competition, Brothers.
+- Mercury (Budha): Intelligence, Data, Algorithms, Communication, Commerce, APIs.
+- Jupiter (Guru): Wisdom, Expansion, Advisory, Architecture, Wealth, Strategy.
+- Venus (Shukra): Luxury, Design, UI, Arts, Vehicles, Relationships, Partnerships.
+- Saturn (Shani): Discipline, Structure, Legacy Systems, Infrastructure, Persistence, Delay.
+- Rahu (North Node): Innovation, Foreign Lands, AI, Cloud Computing, Disruption, Unconventional paths.
+- Ketu (South Node): Research, Debugging, Backend, Spiritual Liberation, Abstract Math.
 
-[SOURCE: Saravali, Chapter 30]
-Rule 6: A planet transiting the 3rd, 6th, or 11th from the Natal Moon brings rapid financial gains.
-Rule 7: A planet transiting the 8th or 12th from the Natal Moon causes losses or unexpected expenses.
+================================================================================
+SECTION 2: HOUSE SIGNIFICATIONS (THE DOMAINS)
+================================================================================
+[SOURCE: Phaladeepika, Ch 1]
+- 1st House (Lagna): Self, Physique, General Health, Personality, The "Frontend".
+- 2nd House: Wealth, accumulated assets, Speech, Data Storage, Family.
+- 3rd House: Courage, Communication, Short Travel, Teammates, APIs/Integrations.
+- 4th House: Mother, Home, Happiness, Core Infrastructure, Real Estate (Servers).
+- 5th House: Creativity, Speculation, Stocks, Future Planning, Logic/Intelligence.
+- 6th House: Enemies, Debts, Disease, Bugs, Litigation, Daily Routines (Sprints).
+- 7th House: Partners, Vendors, Marriage, Public Relations, Clients.
+- 8th House: Transformation, Sudden Events, R&D, Legacy Code, Hidden Knowledge.
+- 9th House: Dharma, Fortune, Higher Education, Guru/Mentors, Strategy/Vision.
+- 10th House (Karma): Career, Status, Reputation, Leadership, Production Environment.
+- 11th House (Labha): Gains, Networks, Professional Circles, Cash Flow, Scalability.
+- 12th House: Losses, Isolation, Foreign Lands, Cloud/Virtualization, Sleep, Exit Strategy.
+
+================================================================================
+SECTION 3: KEY YOGAS (THE DESIGN PATTERNS)
+================================================================================
+[SOURCE: Saravali, Ch 30 & BPHS Ch 35]
+
+[YOGA: Gaja Kesari]
+- Rule: If Jupiter is in a Kendra (1, 4, 7, 10) from the Moon.
+- Effect: Gives polite speech, lasting fame, wealth, and victory over enemies. Good for advisory roles.
+
+[YOGA: Pancha Mahapurusha - Ruchaka]
+- Rule: Mars in own sign (Aries/Scorpio) or Exalted (Capricorn) in a Kendra house.
+- Effect: Born leader, courageous, excellent for Engineering or Military/Police leadership.
+
+[YOGA: Pancha Mahapurusha - Bhadra]
+- Rule: Mercury in own sign (Gemini/Virgo) or Exalted (Virgo) in a Kendra house.
+- Effect: High intellect, data expert, excellent communicator, statistical genius.
+
+[YOGA: Pancha Mahapurusha - Hamsa]
+- Rule: Jupiter in own sign (Sag/Pisces) or Exalted (Cancer) in a Kendra house.
+- Effect: Ethical leader, highly respected, purity of mind, strategic wisdom.
+
+[YOGA: Pancha Mahapurusha - Malavya]
+- Rule: Venus in own sign (Taurus/Libra) or Exalted (Pisces) in a Kendra house.
+- Effect: Wealthy, lover of arts/luxury, charismatic leader, success in design/media.
+
+[YOGA: Pancha Mahapurusha - Shasha]
+- Rule: Saturn in own sign (Cap/Aquarius) or Exalted (Libra) in a Kendra house.
+- Effect: Stern leader, controls masses, builds massive structures/organizations, long-lasting legacy.
+
+[YOGA: Budhaditya]
+- Rule: Sun and Mercury conjoined in the same house (especially 1, 5, 10).
+- Effect: "Nipuna" (Expert) Yoga. High intelligence, skill in calculation/coding, successful commerce.
+
+[YOGA: Chandra-Mangala]
+- Rule: Moon and Mars conjoined or aspecting each other.
+- Effect: Earnings through unscrupulous means or aggressive business tactics. High financial drive.
+
+[YOGA: Vipareeta Raja Yoga
