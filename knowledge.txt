@@ -106,3 +106,73 @@ SECTION 5: MODERN TECH TRANSLATION LAYER
 - Rule: 11th House strength determines Scalability (Network effects and Gains).
 - Rule: "Microservices" architecture is represented by Gemini (Communication between twins/nodes) and Aquarius (Networked systems).
 - Rule: "Monolith" architecture is represented by Capricorn (Saturnine structure) and Taurus (Fixed earth).
+
+================================================================================
+SECTION 6: NAKSHATRA ARCHETYPES (THE SUBCONSCIOUS OPERATING SYSTEM)
+================================================================================
+[SOURCE: The Nakshatras by Dennis Harness]
+
+- Ashwini (00.00-13.20 Aries): "The Star of Transport." Fast, impulsive, excellent for Startups and rapid prototyping. Prone to leaving projects unfinished.
+- Bharani (13.20-26.40 Aries): "The Star of Restraint." Creative incubation, managing large teams, dealing with HR/personnel issues. Struggle: Delegation.
+- Krittika (26.40 Aries - 10.00 Taurus): "The Star of Fire." Sharp intellect, critical code reviews, cutting through bureaucracy. Can be harsh with subordinates.
+- Rohini (10.00-23.20 Taurus): "The Star of Ascent." Focus on growth, luxury products, UI/UX design, and accumulation of assets.
+- Mrigashira (23.20 Taurus - 06.40 Gemini): "The Searching Star." Research, debugging, wandering mind. Great for R&D but gets bored easily.
+- Ardra (06.40-20.00 Gemini): "The Star of Sorrow." Stormy, intense transformation. Excellent for deleting legacy code or restructuring failing companies.
+- Punarvasu (20.00 Gemini - 03.20 Cancer): "The Star of Renewal." Recycling code, refactoring, returning to first principles. Resilient against failure.
+- Pushya (03.20-16.40 Cancer): "The Star of Nourishment." The best star for mentorship, teaching, and stable, long-term product growth.
+- Ashlesha (16.40-30.00 Cancer): "The Clinging Star." Deep psychological insight, manipulation, security/encryption, corporate politics.
+- Magha (00.00-13.20 Leo): "The Star of Power." Ancestral legacy, CEO roles, maintaining tradition/legacy systems. Ego battles.
+- Purva Phalguni (13.20-26.40 Leo): "The Star of Fruit." Enjoying the rewards, easy success, relaxation. Good for "Maintenance Mode" rather than "Build Mode."
+- Uttara Phalguni (26.40 Leo - 10.00 Virgo): "The Star of Patronage." Contracts, agreements, reliable partnerships. The perfect Co-Founder star.
+- Hasta (10.00-23.20 Virgo): "The Hand." Manual dexterity, coding speed, attention to detail. Can lose the forest for the trees (micro-management).
+- Chitra (23.20 Virgo - 06.40 Libra): "The Pearl." Architecture, 3D design, creating beautiful structures. Obsessed with aesthetic perfection.
+- Swati (06.40-20.00 Libra): "The Self-Going." Independence, consulting, freelancing. Like "Serverless" architecture—highly flexible.
+- Vishakha (20.00 Libra - 03.20 Scorpio): "The Star of Purpose." Fixated on a single goal, competitive, jealous of competitors. Great for "Killer Features."
+- Anuradha (03.20-16.40 Scorpio): "The Star of Success." Collaborative success, working in groups/scrums. Friendships are key to career.
+- Jyeshtha (16.40-30.00 Scorpio): "The Eldest." Seniority, managing crisis, dealing with the board of directors. Protection against corporate attacks.
+- Mula (00.00-13.20 Sagittarius): "The Root." Getting to the bottom of things. Research, investigation, tearing things down to rebuild.
+- Purva Ashadha (13.20-26.40 Sagittarius): "The Invincible." Unbeatable belief in one's product. Good for sales/evangelism. Can be stubborn.
+- Uttara Ashadha (26.40 Sagittarius - 10.00 Capricorn): "The Universal." Unstoppable victory through patience. Enterprise-scale achievements.
+- Shravana (10.00-23.20 Capricorn): "The Ear." Listening, learning, consulting. Great for gathering requirements and understanding user needs.
+- Dhanishta (23.20 Capricorn - 06.40 Aquarius): "The Star of Symphony." Timing, music, orchestration (Kubernetes), synchronizing teams.
+- Shatabhisha (06.40-20.00 Aquarius): "The Hundred Healers." Secrecy, cryptography, solving impossible bugs. The "Black Box" operator.
+- Purva Bhadrapada (20.00 Aquarius - 03.20 Pisces): "The Scorching Pair." Intense focus, sacrifice for the cause. The "Crunch Time" star.
+- Uttara Bhadrapada (03.20-16.40 Pisces): "The Warrior." Deep wisdom, controlling anger, benevolent leadership. Long-term retention strategies.
+- Revati (16.40-30.00 Pisces): "The Wealthy." Completion, final release, exit strategy, retirement planning.
+
+================================================================================
+SECTION 7: STRATEGIC REMEDIES (THE PATCHES)
+================================================================================
+[SOURCE: Modern Behavioral Astrology]
+
+- AFFLICTION: Weak Sun (Low Confidence/Authority)
+  - TECH SYMPTOM: Imposter syndrome, fear of speaking in stand-ups.
+  - REMEDY: Take credit for your code publicly. Lead a small project. Wear Gold/Ruby.
+
+- AFFLICTION: Weak Moon (Anxiety/Burnout)
+  - TECH SYMPTOM: Taking code reviews personally, unstable sleep due to on-call shifts.
+  - REMEDY: Strict "No Screen" time after 9 PM. Drink water from a silver vessel.
+
+- AFFLICTION: Weak Mars (Lack of Drive)
+  - TECH SYMPTOM: Procrastination, inability to ship features, fear of conflict.
+  - REMEDY: Physical exercise before work. Practice "Tough Love" in code reviews.
+
+- AFFLICTION: Weak Mercury (Communication Bugs)
+  - TECH SYMPTOM: Misunderstanding requirements, messy documentation, spaghetti code.
+  - REMEDY: Write technical blogs. Learn a new syntax. Green plants on desk.
+
+- AFFLICTION: Weak Jupiter (Lack of Vision)
+  - TECH SYMPTOM: Stagnation, stuck in "Junior" role, lack of mentorship.
+  - REMEDY: Teach a junior developer. Contribute to Open Source.
+
+- AFFLICTION: Weak Saturn (Discipline Issues)
+  - TECH SYMPTOM: Missing deadlines, ignoring technical debt, hate for process/JIRA.
+  - REMEDY: Clean your desk daily. Donate to blue-collar workers. Follow a strict routine.
+
+- AFFLICTION: Rahu Issues (Obsession/Illusion)
+  - TECH SYMPTOM: "Shiny Object Syndrome" (switching stacks constantly), over-engineering.
+  - REMEDY: Finish one project before starting another. Avoid office gossip.
+
+- AFFLICTION: Ketu Issues (Detachment/ apathy)
+  - TECH SYMPTOM: "Quiet Quitting," feeling invisible, brilliant code but no recognition.
+  - REMEDY: Meditation. Focus on backend/invisible architecture.
